@@ -5,8 +5,8 @@ Definitions for RAM RT-video processing
 @author: m
 """
 
-#%% load arduino definitions from a def file
-#runfile('/home/m/Dropbox/maze/ramarpydefs.py')
+
+
 ##%% Initializing PulsePal
 #import IPython
 #IPython.start_ipython()
@@ -124,8 +124,8 @@ if dokinect:  # kinectw
     pass
 elif doweb:   # webcam 
     cap = cv2.VideoCapture(0)
-else:         # fallback to RECORDED VIDEO: 
-    cap = cv2.VideoCapture('/home/m/Dropbox/maze/video/avi/templ_le_depth.avi')
+
+
 print('Capture:')
 print(cap)
 #%% READ FUNCTIONS
@@ -148,7 +148,7 @@ if frame==None:
 #%% TEMPLATES START HERE        
 # capture a template like so:
 frame=read()
-cv2.imwrite('/home/m/Dropbox/maze/templates/new.png', frame)
+cv2.imwrite('templates/new.png', frame)
 #%% match template:
 
 global center,armcoords    
@@ -181,11 +181,11 @@ def get_match(templatename,img=None):
         top_left = max_loc
     center=center_from_rectangle(top_left,w,h,img);
     return center    
-#    templatename="/home/m/Dropbox/maze/oram_git/templates/rat/k1.jpg"
+
 #% GET COORDINATES OF MAZE CENTER
 def get_center(frame):
     print 'Getting coordinates of center...'
-    templatename="/home/m/Dropbox/maze/templates/center.png"
+    templatename="templates/center.png"
     center=get_match(templatename)
     # shift center slighty up
     center=list(center)
@@ -199,7 +199,7 @@ def get_center(frame):
 center,frame=get_center(frame)
 #% match to arms:
 def get_arm_coord(narm):
-    templatename="/home/m/Dropbox/maze/templates/arm"+str(narm)+".png"        
+    templatename="templates/arm"+str(narm)+".png"        
     o=get_match(templatename)
     if dokinect:         # correction for alignment of cameras
         cutx=-7 # cut this much from depth-based mask. Coordinates will be too high.
@@ -277,19 +277,19 @@ os.system(' oat kill; oat clean roi raw pos view_pos_raw  view_pos filt mask kpo
 os.system(' oat frameserve wcam raw  &   ')
 # os.system(' oat frameserve gige gige_stream  &   ') #% UNCOMMENT ON BRAIN4
 # mask and publish to roi:
-os.system(' oat framefilt mask raw roi -c  ~/Dropbox/bash/configs/oat/config.toml mask &  ')
+os.system(' oat framefilt mask raw roi -c  configs/oat/config.toml mask &  ')
 
 ## Subtact background: use bsub or mog
-os.system('  oat framefilt bsub roi filt -c ~/Dropbox/bash/configs/oat/config.toml bg_config &  ')
+os.system('  oat framefilt bsub roi filt -c configs/oat/config.toml bg_config &  ')
 
 #os.system('  oat view filt & ')
 
 ## Use color-based object detection on the 'raw' frame stream
 ## publish the result to the 'pos' position stream
 ## add --tune after pos here
-os.system('  oat posidet hsv filt pos --tune   -c ~/Dropbox/bash/configs/oat/config_wcam.toml hsv_config & ')
+os.system('  oat posidet hsv filt pos --tune   -c configs/oat/config_wcam.toml hsv_config & ')
 
-os.system(' oat posifilt kalman pos kpos -c ~/Dropbox/bash/configs/oat/config.toml kalman &  ')
+os.system(' oat posifilt kalman pos kpos -c configs/oat/config.toml kalman &  ')
 
 os.system(' oat decorate roi -p kpos -s -t view_pos_raw & ') 
 #os.system('  oat record -s stream_gige    -d -f /home/m/usb/data/video/movies/fall/   -n ' + thefilename + ' &   ') #% UNCOMMENT ON BRAIN4
@@ -460,7 +460,6 @@ def write_data(arms_visited,diderrors,f):
         dict_writer.writerow(d[-1])    
             
 #%% Talk to stupid controller
-sys.path.append('/home/m/Dropbox/python/ram/oram_git/')
 context_stupid = zmq.Context()
 socket_pull = context_stupid.socket(zmq.PULL)
 port_push='5558'

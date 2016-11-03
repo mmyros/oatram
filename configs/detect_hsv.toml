@@ -1,0 +1,10 @@
+[key]
+
+tune=1#bool Provide GUI sliders for tuning hsv parameters
+erode=0#+int Candidate object erosion kernel size (pixels)
+dilate=10#+int Candidate object dilation kernel size (pixels)
+min_area=0#+double Minimum object area (pixels2)
+max_area=10000#+double Maximum object area (pixels2)
+h_thresholds={min=10, max=61 }#{min=+int, max=+int} Hue pass band
+s_thresholds={min=5,  max=30 }#{min=+int, max=+int} Saturation pass band
+v_thresholds={min=96, max=256}#{min=+int, max=+int} Value pass band

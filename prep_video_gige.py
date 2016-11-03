@@ -96,12 +96,12 @@ if dodebug:
         print "error reading socket"
 #%%
 # run capture through C, save template
-# source of this is in ~/Dropbox/maze/pointgrey/strobe/save_template
-os.system("~/Dropbox/maze/pointgrey/save_image_gige")
+# source of this is available upon request
+os.system("./save_image_gige")
 #%% define mask of radius around center
 #outer_disk_mask=mask_center(1.6)
 def read():
-    frame_hd = cv2.imread('/home/m/Dropbox/maze/video/images/gige_template.bmp',0)
+    frame_hd = cv2.imread('images/gige_template.bmp',0)
     frame  = cv2.resize( frame_hd, (0,0),fx=1.0/scale,fy=1.0/scale ) #resize by 10x
     return frame,frame_hd
 frame,frame_hd=read()
@@ -111,7 +111,7 @@ if frame is None:
 #    _=read()
 #%% TEMPLATES START HERE        
 # capture a template like so:
-cv2.imwrite('/home/m/Dropbox/maze/templates/gige_new_template.png', frame_hd)
+cv2.imwrite('templates/gige_new_template.png', frame_hd)
 #%% match template:
 
 global center,armcoords,ram_should_continue    
@@ -164,7 +164,7 @@ center,frame=get_center(frame)
 #% match to arms:
 
 def get_arm_coord(narm):
-    templatename="/home/m/Dropbox/maze/templates/gige/arm"+str(narm)+".bmp"        
+    templatename="templates/gige/arm"+str(narm)+".bmp"        
     o=get_match(templatename)
     return o 
 def get_arm_coords(frame):

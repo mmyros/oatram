@@ -1,0 +1,39 @@
+[frameserve-config]
+fps = 21                 # FPS: only works for gige cameras
+
+[frameserve-trig]
+#trigger_on=true
+#strobe_pin=1
+trigger-mode=1
+#enforce_fps=true
+#fps=22
+trigger-rising=true
+gain=30 # 48 is max
+
+[mask]
+mask = "/home/m/Dropbox/maze/video/images/mask.png"                   # Path to mask image
+
+[bg_config]
+learning_coeff = 0.0001                # Learning coefficient to update model of image background
+
+
+[hsv_config]
+h-thresh=[0,256] #{min=+int, max=+int} Hue pass band BEST TO KEEP VERY SMALL
+s-thresh=[0, 256] #{min=+int, max=+int} Saturation pass band # doesnt matter much, should be wide
+v-thresh=[1,  256]#{min=+int, max=+int} Value pass band # Vmin absolutely crucial!
+area=[478,12000]#+double Minimum object area (pixels2)
+dilate=0#+int Candidate object dilation kernel size (pixels) # TAKE DOWN BY HAND!
+erode=23#+int Candidate object erosion kernel size (pixels)
+
+[filt-thr]
+thresh=[18,140]
+area=[2273,17668]
+erode=23
+dilate=13
+
+[kalman]
+dt = 0.02
+timeout = 0.0
+sigma-accel = 400.0
+sigma-noise = 2.0
+tune=0

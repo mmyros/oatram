@@ -1,11 +1,8 @@
 # oatram
 
 Demo:
+https://mmyros.github.io/github.io/
 
-<video width="1040" height="680" controls>
-  <source src="https://mmyros.github.io/github.io/images/example.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
 
 
 BOM:

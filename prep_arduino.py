@@ -8,14 +8,14 @@ Created on Mon Feb 24 18:16:02 2014
 do_debug=0
 from pyfirmata import Arduino, util
 from Tkinter import *
-import time as t
+import time as t,warnings
 #ls '/dev/ttyA*'
 print '===================================='
 boards_found=0
-indport=0 # start at -1 if no pulsepal is expected. PulsePal should be connected first, so it will be presumably on ACM0.
+indport=0 # start at -1 if no pulsepal is expected, otherwise 0. PulsePal should be connected first, so it will be presumably on ACM0.
 board1=[]
 board2=[]
-while indport<5 and boards_found<2 :        
+while indport<10 and boards_found<2 :        
     if boards_found <1 :
         print 'Looking for board 1...'
         board1 = []
@@ -43,6 +43,8 @@ while indport<5 and boards_found<2 :
         boards_found += 1
 # pins 2 to 9 (so subtract 1 from arduino pin to get software pin)
 #%% function that controls arduino
+if boards_found<1:
+    warnings.warn('No Arduinos found! You do want to run a maze, right?')
 def a (board,pin , value):
     """ pin , value
     """
@@ -86,23 +88,17 @@ if do_debug:
 #% set up pinlist_board1 as a bunch of servo objects
 pinlist_board1=[];
 pinlist_board2=[];
-for i in range(2,13)    :
-    #%
-    pin = board1.get_pin('d:' + `i` + ':s')
-    pinlist_board1.append(pin)
-    pin.write(43)
-    pin = board2.get_pin('d:' + `i` + ':s')
-    pinlist_board2.append(pin)
-    pin.write(43)
-#% move pins by list
-#def moveall(dapin,a):
-#    if a == 1:
-#        degr=85;
-#    elif dapin==2 or dapin==7:
-#        degr=43;
-#    else:
-#        degr=43;    
-#    pinlist_board1[dapin-1].write(degr)    # -2 fixes the factthat we start with pin 2, and python counts arrays starting with 0
+try:
+    for i in range(2,13)    :
+        #%
+        pin = board1.get_pin('d:' + `i` + ':s')
+        pinlist_board1.append(pin)
+        pin.write(43)
+        pin = board2.get_pin('d:' + `i` + ':s')
+        pinlist_board2.append(pin)
+        pin.write(43)
+except:# NameError:
+    pass
 def movealldegr(dapin,degr):
     # 28 degrees to close, 92 to open
     try:
@@ -126,7 +122,7 @@ def logic2degree(door,logic): # translates open or close to degree of servo
             9: 93,
             10:90,
             11:99,
-            12:113,
+            12:110,
             } 
     elif logic==1: # to open arm:
         degree = {  
@@ -138,10 +134,10 @@ def logic2degree(door,logic): # translates open or close to degree of servo
             6: 10,
             7: 29 ,
             8: 25,
-            9: 23,
+            9: 11,
             10:15,
-            11:36,
-            12:42,
+            11:19,
+            12:36,
             }                 
     return degree.get(door, "nothing")
 #%%    
